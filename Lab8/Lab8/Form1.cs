@@ -14,27 +14,11 @@ namespace Lab8
 {
     public partial class Form1 : Form
     {
+        string path;
         public Form1()
         {
             InitializeComponent();
-            List<Products> Tab = new List<Products> {
-            new Products{NumWar = 1, Code = 11, Name = "Apple", Date = new DateTime(2020, 4, 10), Days = 30, Count = 12000, Price = 10  },
-            new Products{NumWar = 2, Code = 12, Name = "Apple", Date = new DateTime(2020, 4, 12), Days = 30, Count = 14000, Price = 15  },
-            new Products{NumWar = 2, Code = 13, Name = "Apple", Date = new DateTime(2020, 3, 14), Days = 30, Count = 19000, Price = 8  },
-            new Products{NumWar = 1, Code = 14, Name = "Apple", Date = new DateTime(2020, 3, 15), Days = 30, Count = 11000, Price = 20  }};
-            XDocument Doc = new XDocument(new XDeclaration("1.0", "utf-8", "yes"), new XElement("Products"));
-            foreach (var i in Tab)
-            {
-                Doc.Root.Add(new XElement("Product",
-                    new XAttribute("Code", i.Code),
-                    new XElement("NumWar", i.NumWar),
-                    new XElement("Name", i.Name),
-                    new XElement("Date", i.Date.ToString("yyyy.MM.dd")),
-                    new XElement("Days", i.Days),
-                    new XElement("Count", i.Count),
-                    new XElement("Price", i.Price)));
-            }
-            Doc.Save(Path.Combine(Environment.CurrentDirectory, "Doc.xml"));
+            path = Path.Combine(Environment.CurrentDirectory, "Doc.xml");
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -72,7 +56,7 @@ namespace Lab8
                 label27.Text = "Days";
                 label28.Text = "Count";
                 label22.Text = "Price";
-                var Doc = from products in XDocument.Load(Path.Combine(Environment.CurrentDirectory, "Doc.xml")).Descendants("Product")
+                var Doc = from products in XDocument.Load(path).Descendants("Product")
                           where (products.Element("NumWar").Value == textBox1.Text || textBox1.Text == "")
                           && (products.Attribute("Code").Value == textBox2.Text || textBox2.Text == "")
                           && (products.Element("Date").Value == textBox3.Text || textBox3.Text == "")
@@ -142,7 +126,7 @@ namespace Lab8
                     }
                 }
                 int b = 0;
-                var Doc1 = from products in XDocument.Load(Path.Combine(Environment.CurrentDirectory, "Doc.xml")).Descendants("Product")
+                var Doc1 = from products in XDocument.Load(path).Descendants("Product")
                             select new Products
                             {
                                 Code = (int)products.Attribute("Code"),
@@ -162,7 +146,7 @@ namespace Lab8
                 }
                 if (textBox5.Text != "" && textBox6.Text != "" && textBox7.Text != "" && textBox8.Text != "" && textBox9.Text != "" && textBox10.Text != "" && textBox11.Text != "" && a != textBox7.Text.Length && b == 0)
                 {
-                    var Doc = XDocument.Load(Path.Combine(Environment.CurrentDirectory, "Doc.xml"));
+                    var Doc = XDocument.Load(path);
                     Doc.Root.Add(new XElement("Product",
                             new XAttribute("Code", textBox6.Text),
                             new XElement("NumWar", textBox5.Text),
@@ -172,6 +156,7 @@ namespace Lab8
                             new XElement("Count", textBox10.Text),
                             new XElement("Price", textBox11.Text)));
                     Doc.Save(Path.Combine(Environment.CurrentDirectory, "Doc.xml"));
+                    MessageBox.Show("Add successfully!");
                 }
                 else
                 {
@@ -199,10 +184,11 @@ namespace Lab8
             try
             {
                 int ErrCode = Convert.ToInt32(textBox13.Text);
-                var Doc = XDocument.Load(Path.Combine(Environment.CurrentDirectory, "Doc.xml"));
+                var Doc = XDocument.Load(path);
                 Doc.Element("Products").Elements("Product").Where(x =>
                 x.Attribute("Code").Value == textBox13.Text).FirstOrDefault().Remove();
                 Doc.Save(Path.Combine(Environment.CurrentDirectory, "Doc.xml"));
+                MessageBox.Show("Deleted successfully!");
             }
             catch
             {
@@ -213,6 +199,33 @@ namespace Lab8
         private void label13_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            List<Products> Tab = new List<Products> {
+            new Products{NumWar = 1, Code = 11, Name = "Apple", Date = new DateTime(2020, 4, 10), Days = 30, Count = 12000, Price = 10  },
+            new Products{NumWar = 2, Code = 12, Name = "Apple", Date = new DateTime(2020, 4, 12), Days = 30, Count = 14000, Price = 15  },
+            new Products{NumWar = 2, Code = 13, Name = "Apple", Date = new DateTime(2020, 3, 14), Days = 30, Count = 19000, Price = 8  },
+            new Products{NumWar = 1, Code = 14, Name = "Apple", Date = new DateTime(2020, 3, 15), Days = 30, Count = 11000, Price = 20  }};
+            XDocument Doc = new XDocument(new XDeclaration("1.0", "utf-8", "yes"), new XElement("Products"));
+            foreach (var i in Tab)
+            {
+                Doc.Root.Add(new XElement("Product",
+                    new XAttribute("Code", i.Code),
+                    new XElement("NumWar", i.NumWar),
+                    new XElement("Name", i.Name),
+                    new XElement("Date", i.Date.ToString("yyyy.MM.dd")),
+                    new XElement("Days", i.Days),
+                    new XElement("Count", i.Count),
+                    new XElement("Price", i.Price)));
+            }
+            Doc.Save(Path.Combine(Environment.CurrentDirectory, "Doc.xml"));
+            filePath(Path.Combine(Environment.CurrentDirectory, "Doc.xml"));
+        }
+        public void filePath(string pathFile)
+        {
+            path = pathFile;
         }
     }
 }

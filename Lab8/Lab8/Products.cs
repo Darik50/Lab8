@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Lab8
 {
-    class Products
+    public class Products
     {
         public int NumWar;
         public int Code;

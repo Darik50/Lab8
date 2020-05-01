@@ -34,22 +34,6 @@ namespace Lab8
         {
             try
             {
-                if (textBox1.Text != "")
-                {
-                    int ErrNumWar = Convert.ToInt32(textBox1.Text);
-                }
-                if (textBox2.Text != "")
-                {
-                    int ErrCode = Convert.ToInt32(textBox2.Text);
-                }
-                if (textBox3.Text != "")
-                {
-                    DateTime ErrDate = Convert.ToDateTime(textBox3.Text);
-                }
-                if (textBox4.Text != "")
-                {
-                    int ErrDays = Convert.ToInt32(textBox4.Text);
-                }
                 int Dobl = 0;
                 label15.Text = "NumWar";
                 label16.Text = "Code";
@@ -104,14 +88,7 @@ namespace Lab8
         private void button2_Click(object sender, EventArgs e)
         {
             try
-            {
-                int ErrNumWar = Convert.ToInt32(textBox5.Text);
-                int ErrCode = Convert.ToInt32(textBox6.Text);
-                string ErrName = textBox7.Text;
-                DateTime ErrDate = Convert.ToDateTime(textBox8.Text);
-                int ErrDays = Convert.ToInt32(textBox9.Text);
-                int ErrCount = Convert.ToInt32(textBox10.Text);
-                int ErrPrice = Convert.ToInt32(textBox11.Text);
+            {                
                 int a = 0;
                 for(int i = 0; i < textBox7.Text.Length; i++)
                 {
@@ -119,18 +96,9 @@ namespace Lab8
                     {
                         a++;
                     }
-                }
-                int b = 0;
-                var Doc1 = repDat.GetProd();
-                foreach (var i in Doc1)
-                { 
-                    if(i.Code.ToString() == textBox6.Text)
-                    {
-                        b++;
-                    }
-                }
-                if (textBox5.Text != "" && textBox6.Text != "" && textBox7.Text != "" && textBox8.Text != "" && textBox9.Text != "" && textBox10.Text != "" && textBox11.Text != "" && a != textBox7.Text.Length && b == 0)
-                {
+                }                
+                if (textBox5.Text != "" && textBox6.Text != "" && textBox7.Text != "" && textBox8.Text != "" && textBox9.Text != "" && textBox10.Text != "" && textBox11.Text != "" && a != textBox7.Text.Length)
+                {                    
                     repDat.Add(textBox6.Text, textBox5.Text, textBox7.Text, textBox8.Text, textBox9.Text, textBox10.Text, textBox11.Text);
                     MessageBox.Show("Add successfully!");
                 }
@@ -141,7 +109,7 @@ namespace Lab8
             }
             catch
             {
-                MessageBox.Show("Incorrect data entered!");
+                MessageBox.Show("Incorrect data entered!!!");
             }
         }
 
@@ -158,8 +126,7 @@ namespace Lab8
         private void button3_Click(object sender, EventArgs e)
         {
             try
-            {
-                int ErrCode = Convert.ToInt32(textBox13.Text);
+            {                
                 repDat.Del(textBox13.Text);
                 MessageBox.Show("Deleted successfully!");
             }

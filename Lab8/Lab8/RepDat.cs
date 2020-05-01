@@ -25,7 +25,7 @@ namespace Lab8
         {
             var Doc = XDocument.Load(_path);
             Doc.Element("Products").Elements("Product").Where(x =>
-            x.Attribute("Code").Value == Code).FirstOrDefault().Remove();
+                x.Attribute("Code").Value == Code).FirstOrDefault().Remove();
             Doc.Save(Path.Combine(Environment.CurrentDirectory, "Doc.xml"));
             return true;
         }

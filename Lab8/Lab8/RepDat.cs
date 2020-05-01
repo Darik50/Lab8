@@ -23,10 +23,11 @@ namespace Lab8
         
         public bool Del(string Code)
         {
+            int ErrCode = Convert.ToInt32(Code);
             var Doc = XDocument.Load(_path);
             Doc.Element("Products").Elements("Product").Where(x =>
             x.Attribute("Code").Value == Code).FirstOrDefault().Remove();
-            Doc.Save(Path.Combine(Environment.CurrentDirectory, "Doc.xml"));
+            Doc.Save(_path);
             return true;
         }
         public bool CreateDefFile()
@@ -64,10 +65,43 @@ namespace Lab8
                           Count = (int)products.Element("Count"),
                           Price = (int)products.Element("Price")
                       };
+            List<int> ErrCode = new List<int>();
+            int j = 0;
+            foreach(var i in Doc)
+            {
+                ErrCode.Add(i.Code);
+                j++;
+            }
+            for(int i =0; i < ErrCode.Count(); i++)
+            {
+                for (int g = i + 1; g < ErrCode.Count(); g++)
+                {
+                    if(ErrCode[g] == ErrCode[i])
+                    {
+                        throw new Exception();
+                    }
+                }
+            }
             return Doc;
         }
         public IEnumerable<Products> Search(string NumWar, string Code, string Date, string Days)
         {
+            if (NumWar != "")
+            {
+                int ErrNumWar = Convert.ToInt32(NumWar);
+            }
+            if (Code != "")
+            {
+                int ErrCode = Convert.ToInt32(Code);
+            }
+            if (Date != "")
+            {
+                DateTime ErrDate = Convert.ToDateTime(Date);
+            }
+            if (Days != "")
+            {
+                int ErrDays = Convert.ToInt32(Days);
+            }
             var Doc = from products in XDocument.Load(_path).Descendants("Product")
                       where (products.Element("NumWar").Value == NumWar || NumWar == "")
                       && (products.Attribute("Code").Value == Code || Code == "")
@@ -112,6 +146,21 @@ namespace Lab8
         }
         public bool Add(string Code, string NumWar, string Name, string Date, string Days, string Count, string Price)
         {
+            int ErrNumWar = Convert.ToInt32(NumWar);
+            int ErrCode = Convert.ToInt32(Code);
+            string ErrName = Name;
+            DateTime ErrDate = Convert.ToDateTime(Date);
+            int ErrDays = Convert.ToInt32(Days);
+            int ErrCount = Convert.ToInt32(Count);
+            int ErrPrice = Convert.ToInt32(Price);
+            var Doc1 = GetProd();
+            foreach (var i in Doc1)
+            {
+                if (i.Code.ToString() == Code)
+                {
+                    throw new Exception();
+                }
+            }
             var Doc = XDocument.Load(_path);
             Doc.Root.Add(new XElement("Product",
                     new XAttribute("Code", Code),
@@ -121,7 +170,7 @@ namespace Lab8
                     new XElement("Days", Days),
                     new XElement("Count", Count),
                     new XElement("Price", Price)));
-            Doc.Save(Path.Combine(Environment.CurrentDirectory, "Doc.xml"));
+            Doc.Save(_path);
             return true;
         }
 
